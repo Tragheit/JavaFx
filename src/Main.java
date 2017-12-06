@@ -7,7 +7,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
-public class Main extends Application {
+public class Main extends Application implements EventHandler<ActionEvent> {
     //first button
     Button button;
 
@@ -40,10 +40,19 @@ public class Main extends Application {
         //setting text on button
         button.setText("Click me");
 
+        //when action occurs invoke method from implicit parameters
+        button.setOnAction(this);
+
         //adding our first button to the main screen
         layout.getChildren().add(button);
 
+    }
 
+    @Override
+    public void handle(ActionEvent event) {
+        if(event.getSource() == button) {
+            System.out.println("Oooo i love when u touch me there....");
+        }
     }
 }
 
