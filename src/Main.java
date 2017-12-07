@@ -1,19 +1,15 @@
 import javafx.application.Application;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     private Stage window;
     private Scene scene;
-    private Button button;
-    private ListView<String> listView;
+    TreeView<String> tree;
 
     public static void main(String[] args) {
         launch(args);
@@ -23,40 +19,54 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         window = primaryStage;
         window.setTitle("ComboBox Demo");
-        button = new Button("Submit");
 
+        TreeItem<String> root, bucky, megan;
 
-        listView = new ListView<>();
-        listView.getItems().addAll("Iron Man", "Titanic", "Contact", "Surrogates");
+        //Root
+        root = new TreeItem<>();
+        //expended by default
+        root.setExpanded(true);
 
-        //Decide whether one or multiple selection are allowed
-        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        //Bucky
+        bucky = makeBranch("Bucky", root);
+        makeBranch("thenewboston", bucky);
+        makeBranch("YouTube", bucky);
+        makeBranch("Chicken", bucky);
 
-        button.setOnAction(e -> buttonClicked());
+        //Megan
+        megan = makeBranch("Megan", root);
+        makeBranch("Glitter", megan);
+        makeBranch("Makeup", megan);
 
+        //Create tree
+        //root - main branch
+        tree = new TreeView<>(root);
 
+        //to keep root expanded (our root is only container for branches.
+        // Does not contain anythink by itself
+        tree.setShowRoot(false);
 
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(listView, button);
+        //listener needed to react on selection
+        tree.getSelectionModel().selectedItemProperty().addListener((v, onldValue, newValue) -> {
+            if(newValue != null){
+                System.out.println(newValue.getValue());
+            }
+        });
 
+        //Layout
+        StackPane layout= new StackPane();
+        layout.getChildren().add(tree);
         scene = new Scene(layout, 300, 250);
         window.setScene(scene);
         window.show();
     }
+//create branches
+    private TreeItem<String> makeBranch (String title ,TreeItem<String> parent) {
+        TreeItem<String> item = new TreeItem<>(title);
+        item.setExpanded(true);
+        parent.getChildren().add(item);
 
-    //Print out movies
-    private void buttonClicked(){
-        String message = "";
-        //all Lists in JavaFX are ObservableLists <- main class
-        ObservableList<String> movies;
-        movies = listView.getSelectionModel().getSelectedItems();
-
-        for (String m: movies) {
-            message += m + "\n";
-        }
-
-        System.out.println(message);
+        return item;
     }
 }
 
