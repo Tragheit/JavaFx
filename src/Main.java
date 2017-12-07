@@ -2,7 +2,7 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -14,45 +14,36 @@ public class Main extends Application {
 
     @Override
     public void start(Stage window) {
-        window.setTitle("Bucky's Meat Subs");
+        window.setTitle("ChoiceBox Demo");
 
-        Scene scene;
-        Button button;
+        Button button = new Button("Click me");
 
-        //CheckBoxes
-        CheckBox box1 = new CheckBox("Bacon");
-        CheckBox box2 = new CheckBox("Tuna");
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
 
-        //selected by default
-        box2.setSelected(true);
+        //Get items returns the ObservableList object which you can add items to
+        choiceBox.getItems().add("Apples");
+        choiceBox.getItems().add("Bananas");
+        //addition of several items at the same time
+        choiceBox.getItems().addAll("Bacon", "Ham", "Meatball");
 
-        //Buttons
-        button = new Button("Order Now");
-        button.setOnAction(e -> handleOptions(box1, box2));
+        //Set the default value
+        choiceBox.setValue("Apples");
 
-        //Layout
+        button.setOnAction(e -> getChoice(choiceBox));
+
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(box1, box2, button);
+        layout.getChildren().addAll(choiceBox, button);
 
-        scene = new Scene(layout, 300, 250);
+        Scene scene = new Scene(layout, 300, 250);
         window.setScene(scene);
         window.show();
     }
 
-    //Handle checkbox options
-    private void handleOptions(CheckBox box1, CheckBox box2) {
-        String messaege = "Users order :\n";
-
-        if(box1.isSelected()){
-            messaege += "Bacon ";
-        }
-
-        if(box2.isSelected()){
-            messaege += "Tuna ";
-        }
-
-        System.out.println(messaege);
+    //to get the value of the selected item
+    private void getChoice(ChoiceBox<String> choiceBox){
+        String food = choiceBox.getValue();
+        System.out.println(food);
     }
 }
 
