@@ -1,15 +1,21 @@
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     private Stage window;
     private Scene scene;
-    TreeView<String> tree;
+    private TableView<Product> table;
 
     public static void main(String[] args) {
         launch(args);
@@ -18,55 +24,45 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         window = primaryStage;
-        window.setTitle("ComboBox Demo");
+        window.setTitle("TableView Demo");
 
-        TreeItem<String> root, bucky, megan;
+        //Name column
+        TableColumn<Product, String> nameColumn = new TableColumn<>("Name");
+        nameColumn.setMinWidth(200);
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        //Root
-        root = new TreeItem<>();
-        //expended by default
-        root.setExpanded(true);
+        //Price column
+        TableColumn<Product, Double> priceColumn = new TableColumn<>("Price");
+        priceColumn.setMinWidth(100);
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        //Bucky
-        bucky = makeBranch("Bucky", root);
-        makeBranch("thenewboston", bucky);
-        makeBranch("YouTube", bucky);
-        makeBranch("Chicken", bucky);
+        //Quantity column
+        TableColumn<Product, Integer> quantityColumn = new TableColumn<>("Quantity");
+        quantityColumn.setMinWidth(200);
+        quantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
-        //Megan
-        megan = makeBranch("Megan", root);
-        makeBranch("Glitter", megan);
-        makeBranch("Makeup", megan);
+        table = new TableView<>();
+        table.setItems(getProduct());
+        table.getColumns().addAll(nameColumn, priceColumn, quantityColumn);
 
-        //Create tree
-        //root - main branch
-        tree = new TreeView<>(root);
 
-        //to keep root expanded (our root is only container for branches.
-        // Does not contain anythink by itself
-        tree.setShowRoot(false);
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(table);
 
-        //listener needed to react on selection
-        tree.getSelectionModel().selectedItemProperty().addListener((v, onldValue, newValue) -> {
-            if(newValue != null){
-                System.out.println(newValue.getValue());
-            }
-        });
-
-        //Layout
-        StackPane layout= new StackPane();
-        layout.getChildren().add(tree);
-        scene = new Scene(layout, 300, 250);
+        scene = new Scene(vBox);
         window.setScene(scene);
         window.show();
     }
-//create branches
-    private TreeItem<String> makeBranch (String title ,TreeItem<String> parent) {
-        TreeItem<String> item = new TreeItem<>(title);
-        item.setExpanded(true);
-        parent.getChildren().add(item);
 
-        return item;
+    public ObservableList<Product> getProduct(){
+        ObservableList<Product> products = FXCollections.observableArrayList();
+        products.add(new Product("Laptop", 859.00, 20));
+        products.add(new Product("Bouncy Ball", 2.49, 198));
+        products.add(new Product("Toilet", 99.00, 74));
+        products.add(new Product("The Notebook DVD", 19.99, 12));
+        products.add(new Product("Corn", 1.49, 856));
+
+        return products;
     }
 }
 
