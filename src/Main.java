@@ -29,7 +29,9 @@ public class Main extends Application {
         //Set the default value
         choiceBox.setValue("Apples");
 
-        button.setOnAction(e -> getChoice(choiceBox));
+        //Listen for selection changes
+        choiceBox.getSelectionModel().selectedItemProperty()
+                .addListener((v, oldValue, newValue) -> System.out.println(newValue));
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
@@ -40,10 +42,5 @@ public class Main extends Application {
         window.show();
     }
 
-    //to get the value of the selected item
-    private void getChoice(ChoiceBox<String> choiceBox){
-        String food = choiceBox.getValue();
-        System.out.println(food);
-    }
 }
 
