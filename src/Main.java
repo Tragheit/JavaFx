@@ -3,68 +3,46 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-/* implements EventHabdler<ActionHandler> used only when
-    used only when handle() is located in the same class
-    this solution sgould not be used!
- */
-    //first button
-    Button button;
+    Stage window;
+    Scene scene1, scene2;
 
     public static void main(String[] args) {
-
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //setting the name of Stage
-        //Stage is just blank window
-        primaryStage.setTitle("Title of the Window");
+        window = primaryStage;
 
-        //creating layout
-        //Layout is the way the elements are arranged
-        StackPane layout = new StackPane();
+        // label is a chunk of text (no integration)
+        Label label = new Label("Welcome to the first scene :)");
+        Button button1 = new Button("Go to scene 2");
+        button1.setOnAction(e -> window.setScene(scene2));
 
-        //creating scene
-        //Scene is the content of the window (buttons, text fields etc.)
-        Scene scene = new Scene(layout, 300, 250);
-        primaryStage.setScene(scene);
+        // layout 1 - children are laid out in vertical column
+        VBox layout1 = new VBox(20);
+        layout1.getChildren().addAll(label, button1);
+        scene1 = new Scene(layout1, 200, 200);
 
-        //display of Stage to the user
-        primaryStage.show();
+        //Button 2
+        Button button2 = new Button ("Go back to scene 1");
+        button2.setOnAction(e -> window.setScene(scene1));
 
-        //using our first button
-        button = new Button();
+        //Layout 2
+        StackPane layout2 = new StackPane();
+        layout2.getChildren().add(button2);
+        scene2 = new Scene(layout2, 600, 300);
 
-        //setting text on button
-        button.setText("Click me");
-
-        //when action occurs invoke method from implicit parameters
-        button.setOnAction(e -> System.out.println("Oooo i love when u touch me there...."));
-
-        /* this solution uses lambda expressions, it is recommendded solution.
-           We are creating eventHabdler in the run, without the need for implementing handle() menthod
-         */
-
-        //adding our first button to the main screen
-        layout.getChildren().add(button);
-
+        //setting default scene
+        window.setScene(scene1);
+        window.setTitle("Title here");
+        window.show();
     }
-
-    /*
-    This solution requires a lot of additional code
-
-    @Override
-    public void handle(ActionEvent event) {
-        if(event.getSource() == button) {
-            System.out.println("Oooo i love when u touch me there....");
-        }
-    }
-
-    */
 }
 
