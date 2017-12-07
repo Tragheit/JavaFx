@@ -2,45 +2,57 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+
+    private Stage window;
+    private Scene scene;
+    private Button button;
+    private ComboBox<String> comboBox;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage window) {
-        window.setTitle("ChoiceBox Demo");
+    public void start(Stage primaryStage) {
+        window = primaryStage;
+        window.setTitle("ComboBox Demo");
+        button = new Button("Submit");
 
-        Button button = new Button("Click me");
+        comboBox = new ComboBox<>();
+        comboBox.getItems().addAll(
+                "Good Will Hunting",
+                "St. Wincent",
+                "Blackhat"
+        );
 
-        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        comboBox.setPromptText("What is your favourite movie? ");
 
-        //Get items returns the ObservableList object which you can add items to
-        choiceBox.getItems().add("Apples");
-        choiceBox.getItems().add("Bananas");
-        //addition of several items at the same time
-        choiceBox.getItems().addAll("Bacon", "Ham", "Meatball");
+        //User is able to enter title of his favourite movie from keyboard
+        comboBox.setEditable(true);
 
-        //Set the default value
-        choiceBox.setValue("Apples");
+        //comboBoxes generates it's own events. No need to implement listeners
+        comboBox.setOnAction(e -> System.out.println("User selected: " + comboBox.getValue()));
 
-        //Listen for selection changes
-        choiceBox.getSelectionModel().selectedItemProperty()
-                .addListener((v, oldValue, newValue) -> System.out.println(newValue));
+        button.setOnAction(e -> printMovie());
+
 
         VBox layout = new VBox(10);
         layout.setPadding(new Insets(20, 20, 20, 20));
-        layout.getChildren().addAll(choiceBox, button);
+        layout.getChildren().addAll(comboBox, button);
 
-        Scene scene = new Scene(layout, 300, 250);
+        scene = new Scene(layout);
         window.setScene(scene);
         window.show();
     }
 
+    //Print out a movie
+    private void printMovie() {
+        System.out.println(comboBox.getValue());
+    }
 }
 
