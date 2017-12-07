@@ -21,19 +21,32 @@ public class Main extends Application {
     public void start(Stage primaryStage){
         window = primaryStage;
         window.setTitle("Main window");
-        button = new Button("Display Confirmation Window");
 
-        button.setOnAction(e -> {
-            boolean result = ConfirmBox.display("Conformation Window","Are you sure to save changes? ");
-            System.out.println(result);
+        //executes safe exit when "x" clicked
+        window.setOnCloseRequest(e -> {
+            e.consume();
+            closeProgram();
         });
+
+        button = new Button("Close Program");
+
+        //executes safe exit when button clicked
+        button.setOnAction(e -> closeProgram());
+
 
         StackPane layout = new StackPane();
         layout.getChildren().add(button);
         Scene scene1 = new Scene(layout, 300, 250);
         window.setScene(scene1);
         window.show();
+    }
 
+    private void closeProgram() {
+        Boolean answer = ConfirmBox.display("Title", "Sure you want exit");
+
+        if(answer) {
+            window.close();
+        }
     }
 }
 
