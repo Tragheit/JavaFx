@@ -49,7 +49,6 @@ public class Main extends Application {
         fileMenu.getItems().addAll(newMi, openMi, saveMi, settingsMi, exitMi);
 
 
-
         //          edit menu
         Menu editMenu = new Menu("_Edit...");
 
@@ -65,7 +64,6 @@ public class Main extends Application {
         pasteMi.setDisable(true);
 
         editMenu.getItems().addAll(cutMi, copyMi, pasteMi);
-
 
 
         //          help menu
@@ -95,10 +93,25 @@ public class Main extends Application {
 
         helpMenu.getItems().addAll(showLines, autoSave);
 
+        //Difficulty menu
+        Menu difficultyMenu = new Menu("_Difficulty");
+
+        //In toggle group only one item can be selected at the time
+        ToggleGroup difficultyTg = new ToggleGroup();
+
+        RadioMenuItem easyMi = new RadioMenuItem("Easy");
+        RadioMenuItem mediumMi = new RadioMenuItem("Medium");
+        RadioMenuItem hardMi = new RadioMenuItem("Hard");
+
+        easyMi.setToggleGroup(difficultyTg);
+        mediumMi.setToggleGroup(difficultyTg);
+        hardMi.setToggleGroup(difficultyTg);
+
+        difficultyMenu.getItems().addAll(easyMi,mediumMi,hardMi);
 
         //Main menu bar
         MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu);
+        menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu, difficultyMenu);
 
 
         layout = new BorderPane();
