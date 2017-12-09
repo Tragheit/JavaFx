@@ -2,13 +2,12 @@ import javafx.application.Application;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -26,23 +25,21 @@ public class Main extends Application {
         window = primaryStage;
         window.setTitle("Menu Demo");
 
-        IntegerProperty x = new SimpleIntegerProperty(3);
-        IntegerProperty y = new SimpleIntegerProperty();
+        //Input and Labels
+        TextField userInput = new TextField();
+        userInput.setMaxWidth(200);
+        Label firstLabel = new Label("Welcome to the site ");
+        Label secondLabel = new Label();
 
-        //binding x and y -> when x changed then y is also updated
-        y.bind(x.multiply(10));
-        System.out.println("x: " + x.getValue());
-        System.out.println("y: " + y.getValue());
+        HBox bottomText = new HBox(firstLabel, secondLabel);
+        bottomText.setAlignment(Pos.CENTER);
 
-        x.setValue(9);
-        System.out.println("x: " + x.getValue());
-        System.out.println("y: " + y.getValue());
+        VBox vBox = new VBox(10, userInput, bottomText);
+        vBox.setAlignment(Pos.CENTER);
 
-        Button button = new Button("Submit");
+        secondLabel.textProperty().bind(userInput.textProperty());
 
-        StackPane layout = new StackPane();
-        layout.getChildren().add(button);
-        scene = new Scene(layout, 300, 250);
+        scene = new Scene(vBox, 300, 200);
         window.setScene(scene);
         window.show();
     }
