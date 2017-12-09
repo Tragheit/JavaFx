@@ -1,7 +1,11 @@
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -19,105 +23,60 @@ public class Main extends Application {
         window = primaryStage;
         window.setTitle("Menu Demo");
 
+        //          Layout
+        GridPane layout = new GridPane();
+        layout.setPadding(new Insets(20, 20, 20, 20));
 
-        //          file menu
-        //underline before menuitem name means that user can use shortcut alt _ first letter to open it
-        Menu fileMenu = new Menu("_File");
+        layout.setVgap(8);
+        layout.setHgap(10);
 
-        //Menu items
-        MenuItem newMi= new MenuItem("New...");
-        newMi.setOnAction(e -> System.out.println("Create new Project"));
+        //          Items
+        Label usernameLabel = new Label("Username");
+        //setting inline style only for usernameLabel
+        usernameLabel.setStyle("-fx-text-fill: antiquewhite");
+        //setting custom id to the label
+        usernameLabel.setId("bold-label");
 
-        MenuItem openMi = new MenuItem("Open...");
-        openMi.setOnAction(e -> System.out.println("Open existing project"));
+        TextField usernameTextField = new TextField();
+        usernameTextField.setPromptText("username");
 
-        MenuItem saveMi = new MenuItem("Save...");
-        saveMi.setOnAction(e -> System.out.println("Save project"));
+        Label passwordLabel = new Label("Password");
+        //setting inline style only for username
+        passwordLabel.setStyle("-fx-text-fill: antiquewhite");
+        //setting custom id to the label
+        passwordLabel.setId("bold-label");
 
-        //horizontal line -> separator
-        fileMenu.getItems().add(new SeparatorMenuItem());
+        TextField passwordTextField = new TextField();
+        passwordTextField.setPromptText("password");
 
-        MenuItem settingsMi = new MenuItem("Settings...");
-        settingsMi.setOnAction(e -> System.out.println("Open Settings"));
+        Button loginButton = new Button("Login");
+        Button signUpButton = new Button("Sign Up");
+        signUpButton.getStyleClass().add("button-blue");
 
-        //horizontal line -> separator
-        fileMenu.getItems().add(new SeparatorMenuItem());
-
-        MenuItem exitMi = new MenuItem("Exit...");
-        exitMi.setOnAction(e -> System.out.println("Close Project"));
-
-        fileMenu.getItems().addAll(newMi, openMi, saveMi, settingsMi, exitMi);
-
-
-        //          edit menu
-        Menu editMenu = new Menu("_Edit...");
-
-        MenuItem cutMi = new MenuItem("Cut...");
-        cutMi.setOnAction(e -> System.out.println("Cut"));
-
-        MenuItem copyMi = new MenuItem("Copy...");
-        copyMi.setOnAction(e -> System.out.println("Copy"));
-
-        MenuItem pasteMi = new MenuItem("Paste");
-        pasteMi.setOnAction(e -> System.out.println("Paste"));
-        //To disable option -  will be grayed out
-        pasteMi.setDisable(true);
-
-        editMenu.getItems().addAll(cutMi, copyMi, pasteMi);
-
-
-        //          help menu
-        Menu helpMenu = new Menu("_Help...");
-
-        CheckMenuItem showLines = new CheckMenuItem("Show Line Numbers");
-        showLines.setOnAction(e -> {
-            if (showLines.isSelected()){
-                System.out.println("Program now will display line numbers");
-            } else {
-                System.out.println("Hiding line numbers");
-            }
+        //changing layout style after click - just experimental
+        loginButton.setOnAction(e -> {
+            setUserAgentStylesheet(STYLESHEET_CASPIAN);
         });
 
-        CheckMenuItem autoSave = new CheckMenuItem("Auto Save");
+        GridPane.setConstraints(usernameLabel, 0, 0);
+        GridPane.setConstraints(usernameTextField, 1, 0);
 
-        //set selection by default
-        autoSave.setSelected(true);
+        GridPane.setConstraints(passwordLabel, 0, 1);
+        GridPane.setConstraints(passwordTextField, 1, 1);
+        GridPane.setConstraints(loginButton, 0, 2);
 
-        autoSave.setOnAction(e -> {
-            if (autoSave.isSelected()) {
-                System.out.println("Autosave enabled");
-            } else {
-                System.out.println("Autosave disabled");
-            }
-        });
-
-        helpMenu.getItems().addAll(showLines, autoSave);
-
-        //Difficulty menu
-        Menu difficultyMenu = new Menu("_Difficulty");
-
-        //In toggle group only one item can be selected at the time
-        ToggleGroup difficultyTg = new ToggleGroup();
-
-        RadioMenuItem easyMi = new RadioMenuItem("Easy");
-        RadioMenuItem mediumMi = new RadioMenuItem("Medium");
-        RadioMenuItem hardMi = new RadioMenuItem("Hard");
-
-        easyMi.setToggleGroup(difficultyTg);
-        mediumMi.setToggleGroup(difficultyTg);
-        hardMi.setToggleGroup(difficultyTg);
-
-        difficultyMenu.getItems().addAll(easyMi,mediumMi,hardMi);
-
-        //Main menu bar
-        MenuBar menuBar = new MenuBar();
-        menuBar.getMenus().addAll(fileMenu, editMenu, helpMenu, difficultyMenu);
+        GridPane.setConstraints(signUpButton, 1, 2);
 
 
-        layout = new BorderPane();
-        layout.setTop(menuBar);
 
-        scene = new Scene(layout, 400, 300);
+        layout.getChildren()
+                .addAll(usernameLabel, usernameTextField, passwordLabel, passwordTextField, loginButton, signUpButton);
+
+
+        scene = new Scene(layout, 300, 250);
+
+        //set custom layout (user's) as default for scene
+        scene.getStylesheets().addAll("Viper.css");
         window.setScene(scene);
         window.show();
     }

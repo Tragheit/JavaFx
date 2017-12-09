@@ -1,0 +1,24 @@
+.root {
+    -fx-background-color: #383838;
+    -fx-font-size: 10pt;
+}
+
+.label {
+    -fx-text-fill: antiquewhite;
+}
+
+.button {
+     -fx-background-color:#ab4642;
+     -fx-text-fill: #FFFFFF;
+     -fx-background-radius: 4;
+ }
+
+.button-blue {
+    -fx-background-color:#7cafc2;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 4;
+}
+
+#bold-label{
+    -fx-font-weight: bold;
+}
